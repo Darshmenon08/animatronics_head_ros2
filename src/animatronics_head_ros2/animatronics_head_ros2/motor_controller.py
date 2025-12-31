@@ -69,7 +69,7 @@ class MotorController(Node):
             'tongue_in_out': [1740, 3305],   # ID 23
             'tongue_left_right': [2200, 2826],# ID 24
             # Jaw (ID 25)
-            'jaw': [2100, 2200],             # ID 25
+            'jaw': [2000, 2300],             # ID 25
         }
         
         # Declare all motor limit parameters

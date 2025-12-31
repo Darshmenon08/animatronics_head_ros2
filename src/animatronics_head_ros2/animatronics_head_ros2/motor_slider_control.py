@@ -67,7 +67,7 @@ class MotorSliderControl(Node):
             'tongue_in_out':    {'id': 23, 'min': 1740, 'max': 3305, 'port': 'mouth'},
             'tongue_left_right': {'id': 24, 'min': 2200, 'max': 2826, 'port': 'mouth'},
             # Jaw (Port: /dev/jaw, ID: 25)
-            'jaw':          {'id': 25, 'min': 2100, 'max': 2200, 'port': 'jaw'},
+            'jaw':          {'id': 25, 'min': 2000, 'max': 2300, 'port': 'jaw'},  # min=CLOSED, max=OPEN
         }
         
         # Port paths

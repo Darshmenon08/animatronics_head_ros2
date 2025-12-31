@@ -193,6 +193,13 @@ class DynamixelController(Node):
         # Timer to publish joint states
         self.create_timer(0.05, self.publish_joint_states)  # 20Hz
         
+        # Enable torque for all motors
+        for motor_name in self.motor_ids.keys():
+            if self.enable_torque(motor_name, True):
+                self.get_logger().info(f"Torque enabled for {motor_name}")
+            else:
+                self.get_logger().warn(f"Failed to enable torque for {motor_name}")
+                
         self.get_logger().info('Dynamixel Controller Node initialized.')
 
     def enable_torque(self, motor_name, enable=True):

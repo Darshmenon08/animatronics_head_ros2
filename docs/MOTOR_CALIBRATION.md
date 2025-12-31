@@ -109,9 +109,9 @@ This document contains the calibration data and direction mappings for all 25 Dy
 
 ## Jaw (Port: /dev/jaw, ID: 25)
 
-| Motor | ID | Min | Max |
-|-------|-----|------|------|
-| **jaw** | 25 | 2100 | 2200 |
+| Motor | ID | Min | Max | Min Position | Max Position |
+|-------|-----|------|------|--------------|--------------|
+| **jaw** | 25 | 2000 | 2300 | CLOSED | OPEN |
 
 ---
 

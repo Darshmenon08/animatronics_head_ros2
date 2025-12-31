@@ -47,16 +47,18 @@ ros2 launch animatronics_head_ros2 slider_control.launch.py
 
 See [docs/MOTOR_CALIBRATION.md](docs/MOTOR_CALIBRATION.md) for detailed motor calibration and direction information.
 
-### Face Mimic (Landmark-based motor control)
+### Face Mimic (Complete System)
+This launches BOTH the hardware interface and the face tracking logic.
+
 ```bash
 # Default camera (0)
-ros2 launch animatronics_head_ros2 face_mimic.launch.py
+ros2 launch animatronics_head_ros2 mimic_complete.launch.py
 
 # With HP webcam (camera 9)
-ros2 launch animatronics_head_ros2 face_mimic.launch.py camera_id:=9
+ros2 launch animatronics_head_ros2 mimic_complete.launch.py camera_id:=9
 
 # Without video preview
-ros2 launch animatronics_head_ros2 face_mimic.launch.py show_video:=false
+ros2 launch animatronics_head_ros2 mimic_complete.launch.py show_video:=false
 ```
 
 ### Motor Value Checker
@@ -82,6 +84,41 @@ sudo cp src/animatronics_head_ros2/config/webcam.rules /etc/udev/rules.d/99-webc
 
 sudo udevadm control --reload-rules
 sudo udevadm trigger
+```
+
+## License
+
+
+## Neural Network Training
+
+You can train a neural network to learn the mapping between your face and the robot's motors.
+
+
+
+### 1. Data Collection
+To collect training data, run this single command. It will launch the camera, the sliders, and the recorder.
+```bash
+ros2 launch animatronics_head_ros2 collect_data.launch.py
+```
+**Action**: Move your face in front of the camera while simultaneously adjusting the sliders to match the robot's expression to yours. The data collector will save the correspondence to a CSV file in `~/animatronics_head_ros2/data/`.
+
+
+
+### 2. Training
+Once you have collected enough data (multiple CSV files are fine), run the training script:
+```bash
+python3 src/animatronics_head_ros2/animatronics_head_ros2/train_model.py
+```
+This will train a model and save it to `~/animatronics_head_ros2/models/face_model.h5`.
+
+### 3. Inference (Neural Mimic)
+To control the robot using the trained neural network:
+```bash
+ros2 run animatronics_head_ros2 neural_face_mimic
+```
+Make sure `face_mimic` is also running (it provides the input features):
+```bash
+ros2 run animatronics_head_ros2 face_mimic --ros-args -p drive_motors:=False
 ```
 
 ## License

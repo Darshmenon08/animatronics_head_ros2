@@ -8,6 +8,7 @@ Ported from ROS1 mimic.py
 import rclpy
 from rclpy.node import Node
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
+from std_msgs.msg import Float32MultiArray
 from builtin_interfaces.msg import Duration
 import cv2
 import math
@@ -54,16 +55,19 @@ class FaceMimicNode(Node):
         self.declare_parameter('camera_id', 0)
         self.declare_parameter('show_video', True)
         self.declare_parameter('smoothing_window', 10)
+        self.declare_parameter('drive_motors', True)
         
         self.camera_id = self.get_parameter('camera_id').value
         self.show_video = self.get_parameter('show_video').value
         self.q_size = self.get_parameter('smoothing_window').value
+        self.drive_motors = self.get_parameter('drive_motors').value
         
         # Publishers
         self.publisher_eye = self.create_publisher(JointTrajectory, '/eye/joint_trajectory', 10)
         self.publisher_jaw = self.create_publisher(JointTrajectory, '/jaw/joint_trajectory', 10)
         self.publisher_eye_brow = self.create_publisher(JointTrajectory, '/nose_eye_brow/joint_trajectory', 10)
         self.publisher_mouth = self.create_publisher(JointTrajectory, '/mouth/joint_trajectory', 10)
+        self.publisher_features = self.create_publisher(Float32MultiArray, '/face_features', 10)
         
         # MediaPipe setup
         self.mp_drawing = mp.solutions.drawing_utils
@@ -166,11 +170,11 @@ class FaceMimicNode(Node):
         right_brow_heights = []
         
         for landmark in left_brow_landmarks:
-            height = (forehead_center.y - landmark.y) / self.face_height
+            height = (landmark.y - forehead_center.y) / self.face_height
             left_brow_heights.append(height)
         
         for landmark in right_brow_landmarks:
-            height = (forehead_center.y - landmark.y) / self.face_height
+            height = (landmark.y - forehead_center.y) / self.face_height
             right_brow_heights.append(height)
         
         # Calculate final positions
@@ -255,8 +259,14 @@ class FaceMimicNode(Node):
                     left_eyelid_distance = abs(left_upper_eyelid.y - left_lower_eyelid.y) / self.face_height
                     right_eyelid_distance = abs(right_upper_eyelid.y - right_lower_eyelid.y) / self.face_height
                     
-                    left_eye_open = left_eyelid_distance > 0.03
-                    right_eye_open = right_eyelid_distance > 0.03
+                    # Continuous eyelid control
+                    # Typical range for open eye is ~0.06-0.08, closed is ~0.01-0.02
+                    # We map 0.015 (closed) -> 0.07 (open) to 0.0 -> 1.0
+                    left_lid_val = map_value(left_eyelid_distance, 0.015, 0.07, 0.0, 1.0)
+                    right_lid_val = map_value(right_eyelid_distance, 0.015, 0.07, 0.0, 1.0)
+                    
+                    left_eye_open = left_lid_val > 0.1
+                    right_eye_open = right_lid_val > 0.1
                     
                     left_v = calculate_distance(left_upper_eyelid, left_lower_eyelid) / 2
                     right_v = calculate_distance(right_upper_eyelid, right_lower_eyelid) / 2
@@ -270,7 +280,7 @@ class FaceMimicNode(Node):
                     
                     self.eyes_avg.append((left_horizontal, left_vertical, right_horizontal, right_vertical))
                     smoothed_eye_values = [sum(x[i] for x in self.eyes_avg) / len(self.eyes_avg) for i in range(4)]
-                    position_lid = [1.0 if left_eye_open else 0.0, 1.0 if right_eye_open else 0.0]
+                    position_lid = [left_lid_val, right_lid_val]
                     
                     # === EYEBROW PROCESSING ===
                     brow_positions = self.calculate_eyebrow_positions(face_landmarks)
@@ -278,10 +288,21 @@ class FaceMimicNode(Node):
                     smoothed_brow_values = [sum(x[i] for x in self.eyes_brow_avg) / len(self.eyes_brow_avg) for i in range(4)]
                     
                     # === PUBLISH VALUES ===
-                    self.publish_eyes(smoothed_eye_values, position_lid)
-                    self.publish_eyebrows(smoothed_brow_values)
-                    self.publish_mouth(mouth_v_distance, mouth_l_h_distance, mouth_r_h_distance, mouth_l_v_distance, mouth_r_v_distance)
-                    self.publish_jaw(mouth_v_distance)
+                    if self.drive_motors:
+                        # Debug logging
+                        if self.get_clock().now().nanoseconds % 1000000000 < 50000000: # Log roughly once per second
+                            self.get_logger().info(f"Lid Dist: {left_eyelid_distance:.3f}, Open: {left_eye_open}")
+                            self.get_logger().info(f"Brow Raw: {brow_positions}")
+                            
+                        self.publish_eyes(smoothed_eye_values, position_lid)
+                        self.publish_eyebrows(smoothed_brow_values)
+                        self.publish_mouth(mouth_v_distance, mouth_l_h_distance, mouth_r_h_distance, mouth_l_v_distance, mouth_r_v_distance)
+                        self.publish_jaw(mouth_v_distance)
+                    
+                    # Publish features for training
+                    self.publish_features(smoothed_eye_values, position_lid, smoothed_brow_values, 
+                                        mouth_v_distance, mouth_l_h_distance, mouth_r_h_distance, 
+                                        mouth_l_v_distance, mouth_r_v_distance)
                     
                 except Exception as e:
                     self.get_logger().error(f"Error processing face landmarks: {e}")
@@ -296,8 +317,8 @@ class FaceMimicNode(Node):
         # Eyelid mapping
         # left_lid: 2268=CLOSE, 2058=OPEN (max=CLOSE)
         # right_lid: 938=CLOSE, 1172=OPEN (min=CLOSE)
-        left_lid = map_value(lid_pos[0], 0, 1.1, rad(2268), rad(2058))  # 0=CLOSE, 1=OPEN
-        right_lid = map_value(lid_pos[1], 0, 1.1, rad(938), rad(1172))  # 0=CLOSE, 1=OPEN
+        left_lid = map_value(lid_pos[0], 0.0, 1.0, rad(2268), rad(2058))  # 0=CLOSE, 1=OPEN
+        right_lid = map_value(lid_pos[1], 0.0, 1.0, rad(938), rad(1172))  # 0=CLOSE, 1=OPEN
         
         # Eye position mapping
         # left_v: max=ABOVE (2300), min=BELOW (2000)
@@ -395,7 +416,7 @@ class FaceMimicNode(Node):
     
     def publish_jaw(self, lip_v):
         """Publish jaw motor position."""
-        jaw_value = map_value(lip_v, 0.0, 0.12, 2250, 2038)
+        jaw_value = map_value(lip_v, 0.0, 0.12, 2000, 2300)
         
         msg = JointTrajectory()
         msg.joint_names = ["jaw"]
@@ -405,7 +426,30 @@ class FaceMimicNode(Node):
         point.time_from_start = Duration(sec=0, nanosec=100000000)
         
         msg.points.append(point)
+        msg.points.append(point)
         self.publisher_jaw.publish(msg)
+
+    def publish_features(self, eye_pos, lid_pos, brow_pos, mouth_v, mouth_l_h, mouth_r_h, mouth_l_v, mouth_r_v):
+        """Publish raw face features for data collection/training."""
+        # Flatten all features into a single array
+        # eye_pos: [left_h, left_v, right_h, right_v]
+        # lid_pos: [left_lid, right_lid]
+        # brow_pos: [left_inner, left_outer, right_inner, right_outer]
+        # mouth: [mouth_v, mouth_l_h, mouth_r_h, mouth_l_v, mouth_r_v]
+        
+        features = []
+        features.extend(eye_pos)
+        features.extend(lid_pos)
+        features.extend(brow_pos)
+        features.append(mouth_v)
+        features.append(mouth_l_h)
+        features.append(mouth_r_h)
+        features.append(mouth_l_v)
+        features.append(mouth_r_v)
+        
+        msg = Float32MultiArray()
+        msg.data = features
+        self.publisher_features.publish(msg)
     
     def cleanup(self):
         """Clean up resources."""

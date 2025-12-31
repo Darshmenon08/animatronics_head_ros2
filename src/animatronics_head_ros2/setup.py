@@ -31,6 +31,8 @@ setup(
             'face_mimic = animatronics_head_ros2.face_mimic:main',
             'motor_slider_control = animatronics_head_ros2.motor_slider_control:main',
             'blendshape_mimic = animatronics_head_ros2.blendshape_mimic:main',
+            'data_collector = animatronics_head_ros2.data_collector:main',
+            'neural_face_mimic = animatronics_head_ros2.neural_face_mimic:main',
         ],
     },
 )

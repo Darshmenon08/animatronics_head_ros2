@@ -19,6 +19,11 @@ def generate_launch_description():
             default_value='true',
             description='Show video preview window'
         ),
+        DeclareLaunchArgument(
+            'drive_motors',
+            default_value='true',
+            description='Whether to drive motors (true) or just publish features (false)'
+        ),
         Node(
             package='animatronics_head_ros2',
             executable='face_mimic',
@@ -26,6 +31,7 @@ def generate_launch_description():
             parameters=[{
                 'camera_id': LaunchConfiguration('camera_id'),
                 'show_video': LaunchConfiguration('show_video'),
+                'drive_motors': LaunchConfiguration('drive_motors'),
             }],
             output='screen'
         ),
