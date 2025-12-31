@@ -89,6 +89,31 @@ sudo udevadm control --reload-rules
 sudo udevadm trigger
 ```
 
+## Durability Testing
+
+Test motor durability by recording your expressions and playing them back on loop.
+
+### 1. Record Expressions
+```bash
+python3 src/animatronics_head_ros2/animatronics_head_ros2/record_expression.py
+```
+- Press **'r'** to start/stop recording
+- Press **'q'** to quit
+- Saves to `~/animatronics_head_ros2/recordings/`
+
+### 2. Playback on Loop
+```bash
+# Uses latest recording, loops infinitely
+ros2 launch animatronics_head_ros2 video_mimic.launch.py
+
+# With specific video
+ros2 launch animatronics_head_ros2 video_mimic.launch.py video_path:=/path/to/video.mp4
+
+# Headless (no video preview)
+ros2 launch animatronics_head_ros2 video_mimic.launch.py show_video:=false
+```
+Press **Ctrl+C** to stop. Use for 30+ minute durability tests.
+
 ## License
 
 
