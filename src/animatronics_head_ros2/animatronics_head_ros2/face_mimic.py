@@ -385,14 +385,14 @@ class FaceMimicNode(Node):
         lip_down_3 = map_value(lip_r_v, 0.0, 0.15, 2010, 2836)  # low=UP, high=DOWN
         
         # Cheek Mappings
-        # left_cheek_up: min=UP (1555), max=DOWN (2230)
-        # right_cheek_up: max=UP (2827), min=DOWN (2037)
-        # left_cheek_down: min=UP (1060), max=DOWN (2413)
-        # right_cheek_down: min=DOWN (1923), max=UP (3045)
-        left_cheek_down = map_value(lip_l_h, 0.4, 0.65, 1060, 2413) # low=UP, high=DOWN
-        left_cheek_up = map_value(lip_l_h, 0.4, 0.65, 1555, 2230)   # low=UP, high=DOWN
-        right_cheek_down = map_value(lip_r_h, 0.4, 0.65, 1923, 3045)# low=DOWN, high=UP
-        right_cheek_up = map_value(lip_r_h, 0.4, 0.65, 2827, 2037)  # low=UP, high=DOWN
+        # left_cheek_up: min=UP (1555), max=DOWN (2230) → smile should go UP
+        # right_cheek_up: max=UP (2827), min=DOWN (2037) → smile should go UP
+        # left_cheek_down: min=SMILE (1060), max=FROWN (2413)
+        # right_cheek_down: min=FROWN (1923), max=SMILE (3045)
+        left_cheek_down = map_value(lip_l_h, 0.4, 0.65, 2413, 1060) # FIXED: low=FROWN, high=SMILE
+        left_cheek_up = map_value(lip_l_h, 0.4, 0.65, 2230, 1555)   # FIXED: low=DOWN, high=UP (smile → UP)
+        right_cheek_down = map_value(lip_r_h, 0.4, 0.65, 1923, 3045)# low=FROWN, high=SMILE
+        right_cheek_up = map_value(lip_r_h, 0.4, 0.65, 2037, 2827)  # FIXED: low=DOWN, high=UP (smile → UP)
         
         msg = JointTrajectory()
         msg.joint_names = [
