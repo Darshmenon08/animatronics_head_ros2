@@ -44,7 +44,7 @@ motor_controller:
       tongue_left_right: [2200, 2826]# ID 24
 
       # === JAW (Port: /dev/jaw, ID: 25) ===
-      jaw: [2000, 2300]             # ID 25
+      jaw: [2080, 2300]             # ID 25
 
     # Motor ID mapping for Dynamixel communication
     motor_ids:

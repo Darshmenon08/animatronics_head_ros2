@@ -110,7 +110,7 @@ This document contains the calibration data and direction mappings for all 25 Dy
 
 | Motor | ID | Min | Max | Min Position | Max Position | Function |
 |-------|-----|------|------|--------------|--------------|----------|
-| **jaw** | 25 | 2000 | 2300 | OPEN | CLOSED | Opens and closes the mouth |
+| **jaw** | 25 | 2080 | 2300 | OPEN | CLOSED | Opens and closes the mouth |
 
 ---
 

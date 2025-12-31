@@ -295,7 +295,7 @@ class VideoMimicNode(Node):
         self.publisher_mouth.publish(msg)
         
         # Jaw
-        jaw_value = map_value(mouth_v, 0.0, 0.12, 2300, 2000)
+        jaw_value = map_value(mouth_v, 0.0, 0.12, 2300, 2080)
         jaw_msg = JointTrajectory()
         jaw_msg.joint_names = ["jaw"]
         jaw_point = JointTrajectoryPoint()

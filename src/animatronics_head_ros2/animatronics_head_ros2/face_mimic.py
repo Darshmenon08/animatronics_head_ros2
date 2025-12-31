@@ -417,10 +417,10 @@ class FaceMimicNode(Node):
     def publish_jaw(self, lip_v):
         """Publish jaw motor position.
         
-        Jaw direction: min (2000) = OPEN, max (2300) = CLOSED
+        Jaw direction: min (2080) = OPEN, max (2300) = CLOSED
         """
         # Higher lip_v = more open mouth -> lower jaw value
-        jaw_value = map_value(lip_v, 0.0, 0.12, 2300, 2000)  # Swapped: more open -> lower value
+        jaw_value = map_value(lip_v, 0.0, 0.12, 2300, 2080)  # Swapped: more open -> lower value
         
         msg = JointTrajectory()
         msg.joint_names = ["jaw"]
