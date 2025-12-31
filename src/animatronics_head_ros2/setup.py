@@ -33,6 +33,7 @@ setup(
             'blendshape_mimic = animatronics_head_ros2.blendshape_mimic:main',
             'data_collector = animatronics_head_ros2.data_collector:main',
             'neural_face_mimic = animatronics_head_ros2.neural_face_mimic:main',
+            'video_mimic = animatronics_head_ros2.video_mimic:main',
         ],
     },
 )
