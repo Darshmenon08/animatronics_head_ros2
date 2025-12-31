@@ -108,12 +108,46 @@ def map_value(value, in_min, in_max, out_min, out_max):
 
 ## Smoothing
 
-Values are smoothed using a rolling average to prevent jitter:
+Not all features use smoothing. Here's what does and doesn't use smoothing:
+
+### Features WITH Smoothing (Rolling Average)
+
+| Feature | Buffer | Method |
+|---------|--------|--------|
+| Eye gaze (h, v) | `eyes_avg` | Rolling average over 10 frames |
+| Eyebrow positions | `eyes_brow_avg` | Rolling average over 10 frames |
+| Mouth horizontal (smile width) | `mouth_l_h_avg`, `mouth_r_h_avg` | Rolling average + EMA (alpha=0.01) |
+| Mouth vertical (lip opening) | `mouth_v_avg`, `mouth_l_v_avg`, `mouth_r_v_avg` | Rolling average + EMA (alpha=0.01) |
+
+### Features WITHOUT Smoothing
+
+| Feature | Reason |
+|---------|--------|
+| Eyelid openness | Direct mapping - needs responsive blink detection |
+| Jaw | Derived from mouth_v which is already smoothed |
+| Nose | Not currently controlled by mimic |
+| Tongue | Not currently controlled by mimic |
+
+### Smoothing Code
 
 ```python
+# Rolling average (used for eyes, eyebrows)
 self.eyes_avg = deque(maxlen=10)  # 10-frame window
 self.eyes_avg.append(current_value)
 smoothed = sum(self.eyes_avg) / len(self.eyes_avg)
+
+# Exponential Moving Average + Rolling (used for mouth)
+def smooth(current, previous, alpha=0.01):
+    return alpha * current + (1 - alpha) * previous
+
+mouth_distance = self.safe_smooth(self.safe_average(buffer), buffer)
+```
+
+### Smoothing Parameter
+
+The `smoothing_window` parameter (default: 10) controls the buffer size:
+```bash
+ros2 launch animatronics_head_ros2 mimic_complete.launch.py smoothing_window:=5  # Faster response
 ```
 
 ## Launch Commands
