@@ -1,0 +1,117 @@
+# Motor configuration for all animatronics head motors
+# Motor limits are in Dynamixel position units [min, max]
+# Total: 25 motors across 4 USB ports
+
+motor_controller:
+  ros__parameters:
+    motor_limits:
+      # === EYES (Port: /dev/eye, IDs: 1-6) ===
+      left_v: [2000, 2300]          # ID 1
+      left_h: [1436, 2000]          # ID 2
+      right_v: [59, 370]            # ID 3
+      right_h: [1950, 2459]         # ID 4
+      left_lid: [2058, 2268]        # ID 5
+      right_lid: [938, 1172]        # ID 6
+
+      # === EYEBROWS (Port: /dev/nose_eye_brow, IDs: 7-10) ===
+      left_brow_1: [1040, 2414]     # ID 7
+      left_brow_2: [1412, 1777]     # ID 8
+      right_brow_1: [1616, 1907]    # ID 9
+      right_brow_2: [1440, 1734]    # ID 10
+
+      # === NOSE (Port: /dev/nose_eye_brow, IDs: 11-12) ===
+      nose_left: [1743, 2685]       # ID 11
+      nose_right: [1722, 2620]      # ID 12
+
+      # === LIPS UPPER (Port: /dev/mouth, IDs: 13-15) ===
+      lip_up_1: [1725, 2680]        # ID 13
+      lip_up_2: [1722, 2620]        # ID 14
+      lip_up_3: [1325, 2680]        # ID 15
+
+      # === LIPS LOWER (Port: /dev/mouth, IDs: 16-18) ===
+      lip_down_1: [1497, 2209]      # ID 16
+      lip_down_2: [955, 1940]       # ID 17
+      lip_down_3: [2010, 2836]      # ID 18
+
+      # === CHEEKS (Port: /dev/mouth, IDs: 19-22) ===
+      left_cheek_down: [1060, 2413] # ID 19
+      left_cheek_up: [1555, 2230]   # ID 20
+      right_cheek_down: [1923, 3045]# ID 21
+      right_cheek_up: [2037, 2827]  # ID 22
+
+      # === TONGUE (Port: /dev/mouth, IDs: 23-24) ===
+      tongue_in_out: [1740, 3305]   # ID 23
+      tongue_left_right: [2200, 2826]# ID 24
+
+      # === JAW (Port: /dev/jaw, ID: 25) ===
+      jaw: [2100, 2200]             # ID 25
+
+    # Motor ID mapping for Dynamixel communication
+    motor_ids:
+      # Eyes
+      left_v: 1
+      left_h: 2
+      right_v: 3
+      right_h: 4
+      left_lid: 5
+      right_lid: 6
+      # Eyebrows
+      left_brow_1: 7
+      left_brow_2: 8
+      right_brow_1: 9
+      right_brow_2: 10
+      # Nose
+      nose_left: 11
+      nose_right: 12
+      # Lips
+      lip_up_1: 13
+      lip_up_2: 14
+      lip_up_3: 15
+      lip_down_1: 16
+      lip_down_2: 17
+      lip_down_3: 18
+      # Cheeks
+      left_cheek_down: 19
+      left_cheek_up: 20
+      right_cheek_down: 21
+      right_cheek_up: 22
+      # Tongue
+      tongue_in_out: 23
+      tongue_left_right: 24
+      # Jaw
+      jaw: 25
+
+    # Port configuration
+    ports:
+      eye: "/dev/eye"
+      nose_eye_brow: "/dev/nose_eye_brow"
+      mouth: "/dev/mouth"
+      jaw: "/dev/jaw"
+
+    # Motor to port mapping
+    motor_ports:
+      left_v: "eye"
+      left_h: "eye"
+      right_v: "eye"
+      right_h: "eye"
+      left_lid: "eye"
+      right_lid: "eye"
+      left_brow_1: "nose_eye_brow"
+      left_brow_2: "nose_eye_brow"
+      right_brow_1: "nose_eye_brow"
+      right_brow_2: "nose_eye_brow"
+      nose_left: "nose_eye_brow"
+      nose_right: "nose_eye_brow"
+      lip_up_1: "mouth"
+      lip_up_2: "mouth"
+      lip_up_3: "mouth"
+      lip_down_1: "mouth"
+      lip_down_2: "mouth"
+      lip_down_3: "mouth"
+      left_cheek_down: "mouth"
+      left_cheek_up: "mouth"
+      right_cheek_down: "mouth"
+      right_cheek_up: "mouth"
+      tongue_in_out: "mouth"
+      tongue_left_right: "mouth"
+      jaw: "jaw"
