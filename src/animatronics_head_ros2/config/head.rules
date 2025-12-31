@@ -1,0 +1,20 @@
+# Udev rules for Animatronics Head Dynamixel USB adapters
+# Copy this file to /etc/udev/rules.d/ and reload rules:
+#   sudo cp head.rules /etc/udev/rules.d/99-head.rules
+#   sudo udevadm control --reload-rules
+#   sudo udevadm trigger
+
+# Mouth motors (lips, cheeks, tongue) - IDs 13-24
+SUBSYSTEM=="tty", SUBSYSTEMS=="usb", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6014", ATTRS{serial}=="FTAA07GI", MODE="0777", SYMLINK+="mouth"
+
+# Jaw motor - ID 25
+SUBSYSTEM=="tty", SUBSYSTEMS=="usb", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6014", ATTRS{serial}=="FTAA07H4", MODE="0777", SYMLINK+="jaw"
+
+# Eye motors (h, v, lids) - IDs 1-6
+SUBSYSTEM=="tty", SUBSYSTEMS=="usb", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6014", ATTRS{serial}=="FT763P8L", MODE="0777", SYMLINK+="eye"
+
+# Eyebrow and nose motors - IDs 7-12
+SUBSYSTEM=="tty", SUBSYSTEMS=="usb", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6014", ATTRS{serial}=="FTAA07H1", MODE="0777", SYMLINK+="nose_eye_brow"
+
+# Head camera
+SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", ATTRS{idVendor}=="03f0", ATTRS{idProduct}=="654a", SYMLINK+="head_cam", MODE="0666"

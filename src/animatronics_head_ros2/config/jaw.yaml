@@ -1,0 +1,11 @@
+# Jaw Motor Configuration
+# Compatible with Dynamixel using protocol 2.0
+
+jaw:
+  ID: 25
+  min: 2100
+  max: 2200
+  Return_Delay_Time: 250
+  Operating_Mode: 3
+  Profile_Acceleration: 0
+  Profile_Velocity: 0

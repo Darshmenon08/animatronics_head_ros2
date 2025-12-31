@@ -1,0 +1,56 @@
+# Eye Motors Configuration
+# Compatible with Dynamixel using protocol 2.0
+
+left_v:
+  ID: 1
+  min: 2000
+  max: 2300
+  Return_Delay_Time: 250
+  Operating_Mode: 3
+  Profile_Acceleration: 0
+  Profile_Velocity: 0
+
+left_h:
+  ID: 2
+  min: 1436
+  max: 2000
+  Return_Delay_Time: 250
+  Operating_Mode: 3
+  Profile_Acceleration: 0
+  Profile_Velocity: 0
+
+right_v:
+  ID: 3
+  min: 59
+  max: 370
+  Return_Delay_Time: 250
+  Operating_Mode: 3
+  Profile_Acceleration: 0
+  Profile_Velocity: 0
+
+right_h:
+  ID: 4
+  min: 1950
+  max: 2459
+  Return_Delay_Time: 250
+  Operating_Mode: 3
+  Profile_Acceleration: 0
+  Profile_Velocity: 0
+
+left_lid:
+  ID: 5
+  min: 2058
+  max: 2268
+  Return_Delay_Time: 250
+  Operating_Mode: 3
+  Profile_Acceleration: 0
+  Profile_Velocity: 0
+
+right_lid:
+  ID: 6
+  min: 938
+  max: 1172
+  Return_Delay_Time: 250
+  Operating_Mode: 3
+  Profile_Acceleration: 0
+  Profile_Velocity: 0

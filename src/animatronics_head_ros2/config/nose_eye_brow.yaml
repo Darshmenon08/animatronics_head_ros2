@@ -1,0 +1,56 @@
+# Eyebrows and Nose Motors Configuration
+# Compatible with Dynamixel using protocol 2.0
+
+left_brow_1:
+  ID: 7
+  min: 2040
+  max: 2414
+  Return_Delay_Time: 250
+  Operating_Mode: 3
+  Profile_Acceleration: 0
+  Profile_Velocity: 0
+
+left_brow_2:
+  ID: 8
+  min: 1412
+  max: 1777
+  Return_Delay_Time: 250
+  Operating_Mode: 3
+  Profile_Acceleration: 0
+  Profile_Velocity: 0
+
+right_brow_1:
+  ID: 9
+  min: 1616
+  max: 1907
+  Return_Delay_Time: 250
+  Operating_Mode: 3
+  Profile_Acceleration: 0
+  Profile_Velocity: 0
+
+right_brow_2:
+  ID: 10
+  min: 1440
+  max: 1734
+  Return_Delay_Time: 250
+  Operating_Mode: 3
+  Profile_Acceleration: 0
+  Profile_Velocity: 0
+
+nose_left:
+  ID: 11
+  min: 1743
+  max: 2685
+  Return_Delay_Time: 250
+  Operating_Mode: 3
+  Profile_Acceleration: 0
+  Profile_Velocity: 0
+
+nose_right:
+  ID: 12
+  min: 1722
+  max: 2620
+  Return_Delay_Time: 250
+  Operating_Mode: 3
+  Profile_Acceleration: 0
+  Profile_Velocity: 0

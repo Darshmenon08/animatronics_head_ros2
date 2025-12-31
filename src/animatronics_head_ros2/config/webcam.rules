@@ -1,0 +1,3 @@
+# HP 320 FHD Webcam udev rule
+# Creates symlink /dev/webcam for consistent camera access
+SUBSYSTEM=="video4linux", ATTRS{idVendor}=="03f0", ATTRS{idProduct}=="654a", ATTR{index}=="0", SYMLINK+="webcam", MODE="0666"

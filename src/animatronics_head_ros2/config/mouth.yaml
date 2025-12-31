@@ -1,0 +1,114 @@
+# Mouth Motors Configuration (Lips, Cheeks, Tongue)
+# Compatible with Dynamixel using protocol 2.0
+
+# === LIPS UPPER (IDs 13-15) ===
+lip_up_1:
+  ID: 13
+  min: 1725
+  max: 2680
+  Return_Delay_Time: 250
+  Operating_Mode: 3
+  Profile_Acceleration: 0
+  Profile_Velocity: 0
+
+lip_up_2:
+  ID: 14
+  min: 1722
+  max: 2620
+  Return_Delay_Time: 250
+  Operating_Mode: 3
+  Profile_Acceleration: 0
+  Profile_Velocity: 0
+
+lip_up_3:
+  ID: 15
+  min: 1325
+  max: 2680
+  Return_Delay_Time: 250
+  Operating_Mode: 3
+  Profile_Acceleration: 0
+  Profile_Velocity: 0
+
+# === LIPS LOWER (IDs 16-18) ===
+lip_down_1:
+  ID: 16
+  min: 1497
+  max: 2209
+  Return_Delay_Time: 250
+  Operating_Mode: 3
+  Profile_Acceleration: 0
+  Profile_Velocity: 0
+
+lip_down_2:
+  ID: 17
+  min: 955
+  max: 1940
+  Return_Delay_Time: 250
+  Operating_Mode: 3
+  Profile_Acceleration: 0
+  Profile_Velocity: 0
+
+lip_down_3:
+  ID: 18
+  min: 2010
+  max: 2836
+  Return_Delay_Time: 250
+  Operating_Mode: 3
+  Profile_Acceleration: 0
+  Profile_Velocity: 0
+
+# === CHEEKS (IDs 19-22) ===
+left_cheek_down:
+  ID: 19
+  min: 1060
+  max: 2413
+  Return_Delay_Time: 250
+  Operating_Mode: 3
+  Profile_Acceleration: 0
+  Profile_Velocity: 0
+
+left_cheek_up:
+  ID: 20
+  min: 1555
+  max: 2230
+  Return_Delay_Time: 250
+  Operating_Mode: 3
+  Profile_Acceleration: 0
+  Profile_Velocity: 0
+
+right_cheek_down:
+  ID: 21
+  min: 1923
+  max: 3045
+  Return_Delay_Time: 250
+  Operating_Mode: 3
+  Profile_Acceleration: 0
+  Profile_Velocity: 0
+
+right_cheek_up:
+  ID: 22
+  min: 2037
+  max: 2827
+  Return_Delay_Time: 250
+  Operating_Mode: 3
+  Profile_Acceleration: 0
+  Profile_Velocity: 0
+
+# === TONGUE (IDs 23-24) ===
+tongue_in_out:
+  ID: 23
+  min: 1740
+  max: 3305
+  Return_Delay_Time: 250
+  Operating_Mode: 3
+  Profile_Acceleration: 0
+  Profile_Velocity: 0
+
+tongue_left_right:
+  ID: 24
+  min: 2200
+  max: 2826
+  Return_Delay_Time: 250
+  Operating_Mode: 3
+  Profile_Acceleration: 0
+  Profile_Velocity: 0
