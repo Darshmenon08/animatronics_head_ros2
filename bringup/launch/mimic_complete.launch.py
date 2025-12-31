@@ -12,7 +12,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 
 def generate_launch_description():
-    pkg_share = get_package_share_directory('animatronics_head_ros2')
+    pkg_share = get_package_share_directory('bringup')
     
     # Launch arguments
     camera_id = LaunchConfiguration('camera_id')
@@ -55,3 +55,4 @@ def generate_launch_description():
             }.items()
         ),
     ])
+

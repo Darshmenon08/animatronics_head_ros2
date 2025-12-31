@@ -25,7 +25,7 @@ def generate_launch_description():
             description='Whether to drive motors (true) or just publish features (false)'
         ),
         Node(
-            package='animatronics_head_ros2',
+            package='mimic',
             executable='face_mimic',
             name='face_mimic',
             parameters=[{
@@ -36,3 +36,4 @@ def generate_launch_description():
             output='screen'
         ),
     ])
+

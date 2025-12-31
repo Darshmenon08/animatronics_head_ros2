@@ -14,7 +14,7 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    pkg_share = get_package_share_directory('animatronics_head_ros2')
+    pkg_share = get_package_share_directory('bringup')
     
     # Launch arguments
     video_path = LaunchConfiguration('video_path')
@@ -53,7 +53,7 @@ def generate_launch_description():
         
         # 2. Video Mimic Node
         Node(
-            package='animatronics_head_ros2',
+            package='mimic',
             executable='video_mimic',
             name='video_mimic',
             parameters=[{
@@ -65,3 +65,4 @@ def generate_launch_description():
             output='screen'
         ),
     ])
+

@@ -17,7 +17,7 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
 def generate_launch_description():
-    pkg_share = get_package_share_directory('animatronics_head_ros2')
+    pkg_share = get_package_share_directory('bringup')
     
     # Launch arguments
     camera_id = LaunchConfiguration('camera_id')
@@ -38,7 +38,7 @@ def generate_launch_description():
         
         # 2. Face Mimic (Passive Mode)
         Node(
-            package='animatronics_head_ros2',
+            package='mimic',
             executable='face_mimic',
             name='face_mimic',
             parameters=[{
@@ -51,7 +51,7 @@ def generate_launch_description():
         
         # 3. Slider Control (Manual Input)
         Node(
-            package='animatronics_head_ros2',
+            package='bringup',
             executable='motor_slider_control',
             name='motor_slider_control',
             output='screen',
@@ -60,9 +60,10 @@ def generate_launch_description():
         
         # 4. Data Collector (Recorder)
         Node(
-            package='animatronics_head_ros2',
+            package='training',
             executable='data_collector',
             name='data_collector',
             output='screen'
         ),
     ])
+

@@ -13,7 +13,7 @@ import os
 
 
 def generate_launch_description():
-    pkg_share = get_package_share_directory('animatronics_head_ros2')
+    pkg_share = get_package_share_directory('bringup')
     
     # Load motor limits config
     motor_limits_config = os.path.join(pkg_share, 'config', 'motor_limits.yaml')
@@ -21,10 +21,11 @@ def generate_launch_description():
     return LaunchDescription([
         # Motor Slider Control GUI
         Node(
-            package='animatronics_head_ros2',
+            package='bringup',
             executable='motor_slider_control',
             name='motor_slider_control',
             output='screen',
             parameters=[motor_limits_config],
         ),
     ])
+

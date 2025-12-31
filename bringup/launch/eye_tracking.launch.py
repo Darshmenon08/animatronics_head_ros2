@@ -7,13 +7,13 @@ from launch_ros.actions import Node
 def generate_launch_description():
     """Launch eye controller with camera tracking."""
     
-    pkg_share = get_package_share_directory('animatronics_head_ros2')
+    pkg_share = get_package_share_directory('bringup')
     config_file = os.path.join(pkg_share, 'config', 'motor_limits.yaml')
     
     return LaunchDescription([
         # Motor Controller Node
         Node(
-            package='animatronics_head_ros2',
+            package='hardware_interface',
             executable='motor_controller',
             name='motor_controller',
             parameters=[config_file],
@@ -22,7 +22,7 @@ def generate_launch_description():
         
         # Eye Controller Node
         Node(
-            package='animatronics_head_ros2',
+            package='hardware_interface',
             executable='eye_controller',
             name='eye_controller',
             parameters=[{'camera_id': 0, 'smoothing_window': 10}],
@@ -31,10 +31,11 @@ def generate_launch_description():
         
         # Dynamixel Controller Node
         Node(
-            package='animatronics_head_ros2',
+            package='hardware_interface',
             executable='dynamixel_controller',
             name='dynamixel_controller',
             parameters=[config_file],
             output='screen',
         ),
     ])
+

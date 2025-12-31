@@ -9,7 +9,7 @@ from launch_ros.actions import Node
 def generate_launch_description():
     """Generate launch description for complete animatronics head bringup."""
     
-    pkg_share = get_package_share_directory('animatronics_head_ros2')
+    pkg_share = get_package_share_directory('bringup')
     config_file = os.path.join(pkg_share, 'config', 'motor_limits.yaml')
     
     return LaunchDescription([
@@ -22,7 +22,7 @@ def generate_launch_description():
         
         # Motor Controller Node - applies safety limits
         Node(
-            package='animatronics_head_ros2',
+            package='hardware_interface',
             executable='motor_controller',
             name='motor_controller',
             parameters=[config_file],
@@ -32,7 +32,7 @@ def generate_launch_description():
         
         # Dynamixel Controller Node - hardware communication
         Node(
-            package='animatronics_head_ros2',
+            package='hardware_interface',
             executable='dynamixel_controller',
             name='dynamixel_controller',
             parameters=[config_file],
@@ -40,3 +40,4 @@ def generate_launch_description():
             emulate_tty=True,
         ),
     ])
+
