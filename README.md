@@ -54,12 +54,15 @@ This launches BOTH the hardware interface and the face tracking logic.
 # Default camera (0)
 ros2 launch animatronics_head_ros2 mimic_complete.launch.py
 
-# With HP webcam (camera 9)
+# With HP 320 FHD Webcam (camera 9, symlinked to /dev/webcam via udev)
 ros2 launch animatronics_head_ros2 mimic_complete.launch.py camera_id:=9
 
 # Without video preview
 ros2 launch animatronics_head_ros2 mimic_complete.launch.py show_video:=false
 ```
+
+> **Note**: The `camera_id` is the V4L2 device index. To find your webcam's index, run:  
+> `ls -la /dev/video*` or check with `v4l2-ctl --list-devices`
 
 ### Motor Value Checker
 ```bash

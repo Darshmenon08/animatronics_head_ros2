@@ -344,13 +344,13 @@ class FaceMimicNode(Node):
         """Publish eyebrow motor positions.
         
         Motor direction mapping:
-        - left_brow_1 (ID 7):  max=DOWN, min=UP (2414=DOWN, 1040=UP)
+        - left_brow_1 (ID 7):  max=DOWN, min=UP (2414=DOWN, 2040=UP)
         - left_brow_2 (ID 8):  max=DOWN, min=UP (1777=DOWN, 1412=UP)
         - right_brow_1 (ID 9): min=DOWN, max=UP (1616=DOWN, 1907=UP)
         - right_brow_2 (ID 10): min=DOWN, max=UP (1440=DOWN, 1734=UP)
         """
         # Left brows: higher value = DOWN
-        position[0] = map_value(position[0], 29, 33, rad(1040), rad(2414))  # Left inner: low=UP, high=DOWN
+        position[0] = map_value(position[0], 29, 33, rad(2040), rad(2414))  # Left inner: low=UP, high=DOWN
         position[1] = map_value(position[1], 24, 28, rad(1412), rad(1777))  # Left outer: low=UP, high=DOWN
         # Right brows: lower value = DOWN
         position[2] = map_value(position[2], 29, 33, rad(1907), rad(1616))  # Right inner: low=UP, high=DOWN
@@ -415,8 +415,12 @@ class FaceMimicNode(Node):
         self.publisher_mouth.publish(msg)
     
     def publish_jaw(self, lip_v):
-        """Publish jaw motor position."""
-        jaw_value = map_value(lip_v, 0.0, 0.12, 2000, 2300)
+        """Publish jaw motor position.
+        
+        Jaw direction: min (2000) = OPEN, max (2300) = CLOSED
+        """
+        # Higher lip_v = more open mouth -> lower jaw value
+        jaw_value = map_value(lip_v, 0.0, 0.12, 2300, 2000)  # Swapped: more open -> lower value
         
         msg = JointTrajectory()
         msg.joint_names = ["jaw"]

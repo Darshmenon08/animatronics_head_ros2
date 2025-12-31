@@ -45,7 +45,7 @@ class MotorController(Node):
             'left_lid': [2058, 2268],        # ID 5
             'right_lid': [938, 1172],        # ID 6
             # Eyebrows (IDs 7-10)
-            'left_brow_1': [1040, 2414],     # ID 7
+            'left_brow_1': [2040, 2414],     # ID 7
             'left_brow_2': [1412, 1777],     # ID 8
             'right_brow_1': [1616, 1907],    # ID 9
             'right_brow_2': [1440, 1734],    # ID 10

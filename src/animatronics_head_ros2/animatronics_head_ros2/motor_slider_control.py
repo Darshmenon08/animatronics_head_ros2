@@ -43,7 +43,7 @@ class MotorSliderControl(Node):
             'left_lid':     {'id': 5,  'min': 2058, 'max': 2268, 'port': 'eye'},  # max=CLOSE, min=OPEN
             'right_lid':    {'id': 6,  'min': 938,  'max': 1172, 'port': 'eye'},  # min=CLOSE, max=OPEN
             # Eyebrows (Port: /dev/nose_eye_brow, IDs: 7-10)
-            'left_brow_1':  {'id': 7,  'min': 1040, 'max': 2414, 'port': 'nose_eye_brow'},  # max=DOWN, min=UP
+            'left_brow_1':  {'id': 7,  'min': 2040, 'max': 2414, 'port': 'nose_eye_brow'},  # max=DOWN, min=UP
             'left_brow_2':  {'id': 8,  'min': 1412, 'max': 1777, 'port': 'nose_eye_brow'},  # max=DOWN, min=UP
             'right_brow_1': {'id': 9,  'min': 1616, 'max': 1907, 'port': 'nose_eye_brow'},  # min=DOWN, max=UP
             'right_brow_2': {'id': 10, 'min': 1440, 'max': 1734, 'port': 'nose_eye_brow'},  # min=DOWN, max=UP

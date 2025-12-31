@@ -32,7 +32,7 @@ This document contains the calibration data and direction mappings for all 25 Dy
 
 | Motor | ID | Min | Max | Min Position | Max Position |
 |-------|-----|------|------|--------------|--------------|
-| **left_brow_1** | 7 | 1040 | 2414 | UP (raised) | DOWN (frown) |
+| **left_brow_1** | 7 | 2040 | 2414 | UP (raised) | DOWN (frown) |
 | **left_brow_2** | 8 | 1412 | 1777 | UP (raised) | DOWN (frown) |
 | **right_brow_1** | 9 | 1616 | 1907 | DOWN (frown) | UP (raised) |
 | **right_brow_2** | 10 | 1440 | 1734 | DOWN (frown) | UP (raised) |
@@ -111,7 +111,7 @@ This document contains the calibration data and direction mappings for all 25 Dy
 
 | Motor | ID | Min | Max |
 |-------|-----|------|------|
-| **jaw** | 25 | 2100 | 2200 |
+| **jaw** | 25 | 2000 | 2300 | OPEN | CLOSED |
 
 ---
 
