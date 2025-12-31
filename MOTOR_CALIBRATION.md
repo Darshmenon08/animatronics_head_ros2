@@ -85,16 +85,15 @@ This document contains the calibration data and direction mappings for all 25 Dy
 
 | Motor | ID | Min | Max | Min Position | Max Position | Function |
 |-------|-----|------|------|--------------|--------------|----------|
-| **left_cheek_down** | 19 | 1060 | 2413 | UP | DOWN | Pulls left lower cheek down (sad expression) |
-| **left_cheek_up** | 20 | 1555 | 2230 | UP | DOWN | Pushes left upper cheek (smile/squint) |
-| **right_cheek_down** | 21 | 1923 | 3045 | DOWN | UP | Pulls right lower cheek down (sad expression) |
-| **right_cheek_up** | 22 | 2037 | 2827 | DOWN | UP | Pushes right upper cheek (smile/squint) |
+| **left_cheek_down** | 19 | 1060 | 2413 | SMILE | FROWN | Pulls left lower cheek for expressions |
+| **left_cheek_up** | 20 | 1555 | 2230 | UP (smile) | DOWN | Pushes left upper cheek up when smiling |
+| **right_cheek_down** | 21 | 1923 | 3045 | FROWN | SMILE | Pulls right lower cheek for expressions |
+| **right_cheek_up** | 22 | 2037 | 2827 | DOWN | UP (smile) | Pushes right upper cheek up when smiling |
 
 ### Cheek Notes
-- **left_cheek_down**: max (2413) = DOWN - pulls cheek DOWN
-- **left_cheek_up**: max (2230) = DOWN - motor rotates down direction
-- **right_cheek_down**: min (1923) = DOWN - pulls cheek DOWN (opposite to left)
-- **right_cheek_up**: min (2037) = DOWN - motor rotates down direction (opposite to left)
+- **Smiling**: left_cheek_down=MIN (1060), right_cheek_down=MAX (3045), both cheek_up go UP
+- **Frowning**: left_cheek_down=MAX (2413), right_cheek_down=MIN (1923)
+- Left and right cheeks move in **opposite directions** (mirrored)
 
 ---
 
