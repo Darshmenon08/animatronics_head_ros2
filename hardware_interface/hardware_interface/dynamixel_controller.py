@@ -2,6 +2,7 @@
 """
 Dynamixel Controller Node for Animatronics Head
 Communicates with Dynamixel motors via USB2Dynamixel adapters
+Uses Sync Write for faster motor commands
 """
 
 import rclpy
@@ -24,6 +25,10 @@ ADDR_PRESENT_POSITION = 132
 ADDR_OPERATING_MODE = 11
 ADDR_PROFILE_VELOCITY = 112
 ADDR_PROFILE_ACCELERATION = 108
+
+# Data lengths
+LEN_GOAL_POSITION = 4
+LEN_PRESENT_POSITION = 4
 
 # Protocol version
 PROTOCOL_VERSION = 2.0
@@ -133,9 +138,10 @@ class DynamixelController(Node):
         # Get parameters
         self.baudrate = self.get_parameter('baudrate').value
         
-        # Initialize port handlers and packet handlers
+        # Initialize port handlers, packet handlers, and sync write handlers
         self.port_handlers = {}
         self.packet_handlers = {}
+        self.sync_write_handlers = {}
         
         port_names = ['eye', 'nose_eye_brow', 'mouth', 'jaw']
         for port_name in port_names:
@@ -147,6 +153,13 @@ class DynamixelController(Node):
             if self.port_handlers[port_name].openPort():
                 self.get_logger().info(f"Opened port: {port_path}")
                 self.port_handlers[port_name].setBaudRate(self.baudrate)
+                # Initialize Sync Write handler for goal position
+                self.sync_write_handlers[port_name] = GroupSyncWrite(
+                    self.port_handlers[port_name],
+                    self.packet_handlers[port_name],
+                    ADDR_GOAL_POSITION,
+                    LEN_GOAL_POSITION
+                )
             else:
                 self.get_logger().error(f"Failed to open port: {port_path}")
         
@@ -190,8 +203,8 @@ class DynamixelController(Node):
         # === Publishers ===
         self.joint_state_pub = self.create_publisher(JointState, '/joint_states', 10)
         
-        # Timer to publish joint states
-        self.create_timer(0.05, self.publish_joint_states)  # 20Hz
+        # Timer to publish joint states (reduced to 10Hz to save bandwidth)
+        self.create_timer(0.1, self.publish_joint_states)  # 10Hz
         
         # Enable torque for all motors
         for motor_name in self.motor_ids.keys():
@@ -272,12 +285,15 @@ class DynamixelController(Node):
         return position
 
     def trajectory_callback(self, msg, expected_port):
-        """Handle JointTrajectory messages."""
+        """Handle JointTrajectory messages using Sync Write for speed."""
         if not msg.points:
             return
         
         # Use the first point (for immediate execution)
         point = msg.points[0]
+        
+        # Group motors by port for sync write
+        port_motors = {}
         
         for i, joint_name in enumerate(msg.joint_names):
             if i < len(point.positions):
@@ -292,7 +308,40 @@ class DynamixelController(Node):
                 # Clamp to valid range
                 dxl_position = max(0, min(4095, dxl_position))
                 
-                self.set_position(joint_name, dxl_position)
+                port_name = self.motor_ports.get(joint_name, expected_port)
+                motor_id = self.motor_ids.get(joint_name)
+                
+                if motor_id is not None:
+                    if port_name not in port_motors:
+                        port_motors[port_name] = []
+                    port_motors[port_name].append((motor_id, dxl_position))
+        
+        # Execute sync write for each port
+        for port_name, motors in port_motors.items():
+            sync_write = self.sync_write_handlers.get(port_name)
+            if sync_write is None:
+                # Fallback to individual writes
+                for motor_id, position in motors:
+                    motor_name = [k for k, v in self.motor_ids.items() if v == motor_id][0]
+                    self.set_position(motor_name, position)
+                continue
+            
+            # Clear previous params
+            sync_write.clearParam()
+            
+            # Add all motors to sync write
+            for motor_id, position in motors:
+                # Convert position to byte array
+                param = [
+                    DXL_LOBYTE(DXL_LOWORD(position)),
+                    DXL_HIBYTE(DXL_LOWORD(position)),
+                    DXL_LOBYTE(DXL_HIWORD(position)),
+                    DXL_HIBYTE(DXL_HIWORD(position))
+                ]
+                sync_write.addParam(motor_id, param)
+            
+            # Execute sync write
+            sync_write.txPacket()
 
     def publish_joint_states(self):
         """Publish current joint states."""
@@ -336,3 +385,4 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
+

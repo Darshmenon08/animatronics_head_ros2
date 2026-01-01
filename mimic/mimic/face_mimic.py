@@ -100,8 +100,8 @@ class FaceMimicNode(Node):
         self.mouth_l_v_avg = deque(maxlen=self.q_size)
         self.mouth_r_v_avg = deque(maxlen=self.q_size)
         
-        # Timer for processing frames (30 Hz)
-        self.create_timer(1.0 / 30.0, self.process_frame)
+        # Timer for processing frames (60 Hz for faster response)
+        self.create_timer(1.0 / 60.0, self.process_frame)
         
         self.get_logger().info(f'Face Mimic Node started with camera {self.camera_id}')
     
